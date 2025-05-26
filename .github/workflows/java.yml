@@ -40,10 +40,6 @@ jobs:
       env:
         WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
 
-    - name: Generate test report
-      working-directory: aplicacionJava
-      run: mvn jacoco:report
-
     - name: Check code quality
       working-directory: aplicacionJava
       run: |
