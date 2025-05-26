@@ -56,7 +56,8 @@ jobs:
     if: always()
     steps:
     - name: Show detected changes
-      run: |        echo "🔍 Cambios detectados:"
+      run: |
+        echo "🔍 Cambios detectados:"
         echo "- Rust: ${{ needs.changes.outputs.rust }}"
         echo "- Python: ${{ needs.changes.outputs.python }}"
         echo "- Node.js: ${{ needs.changes.outputs.node }}"
