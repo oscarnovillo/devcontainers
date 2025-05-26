@@ -29,7 +29,8 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: maven    - name: Build with Maven
+        cache: maven    
+    - name: Build with Maven
       working-directory: aplicacionJava
       run: mvn -B package --file pom.xml
 
@@ -63,7 +64,7 @@ jobs:
     - name: Set version
       id: version
       run: echo "VERSION=${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
-          - name: Build and push Docker image
+    - name: Build and push Docker image
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: docker/build-push-action@v5
       with:
