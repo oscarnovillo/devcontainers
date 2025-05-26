@@ -1,0 +1,55 @@
+# Logs
+logs/
+*.log
+
+# Cache
+cache/
+*.cache
+
+# Composer
+/vendor/
+composer.lock
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# VS Code settings (keep configuration but exclude user-specific files)
+.vscode/extensions.json
+.vscode/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+/coverage/
+.phpunit.result.cache
+.phpunit.cache/
+
+# PHP CS Fixer
+.php-cs-fixer.cache
+
+# PHPStan
+.phpstan.cache
+
+# Development tools cache
+.composer/
+
+# Build
+/build/
+/dist/
+
+# Temporary files
+/tmp/
+*.tmp
+
+# Docker
+.dockerignore

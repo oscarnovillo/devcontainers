@@ -1,0 +1,75 @@
+{
+    "php.validate.executablePath": "/usr/local/bin/php",
+    "php.debug.executablePath": "/usr/local/bin/php",
+    "intelephense.files.maxSize": 5000000,
+    "intelephense.telemetry.enabled": false,
+    "intelephense.format.enable": true,
+    "intelephense.completion.triggerParameterHints": true,
+    "intelephense.completion.insertUseDeclaration": true,
+    "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
+    "php.suggest.basic": false,    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    "phpunit.phpunit": "/var/www/html/vendor/bin/phpunit",
+    "phpunit.args": [
+        "--configuration",
+        "/var/www/html/phpunit.xml"
+    ],
+    "phpunit.driverPriority": [
+        "Command",
+        "Path",
+        "Composer",
+        "Phar",
+        "Ssh",
+        "Docker",
+        "GlobalPhpunit"
+    ],
+    "phpstan.enabled": true,
+    "phpstan.configFile": "/var/www/html/phpstan.neon",
+    "phpstan.binPath": "/var/www/html/vendor/bin/phpstan",
+    "php-cs-fixer.executablePath": "/var/www/html/vendor/bin/php-cs-fixer",
+    "php-cs-fixer.config": "/var/www/html/.php-cs-fixer.php",
+    "php-cs-fixer.formatHtml": true,
+    "php-cs-fixer.onsave": true,
+    "php-cs-fixer.allowRisky": false,
+    "files.exclude": {
+        "**/vendor": true,
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": true,
+        "**/.phpunit.cache": true,
+        "**/coverage": true,
+        "**/storage/logs": false
+    },
+    "search.exclude": {
+        "**/vendor": true,
+        "**/node_modules": true,
+        "**/.phpunit.cache": true,
+        "**/coverage": true,
+        "**/storage/logs": true
+    },
+    "emmet.includeLanguages": {
+        "php": "html"
+    },
+    "html.format.indentInnerHtml": true,
+    "html.format.wrapLineLength": 120,
+    "css.validate": true,
+    "scss.validate": true,
+    "javascript.validate.enable": true,
+    "debug.console.fontSize": 14,
+    "debug.console.lineHeight": 22,
+    "terminal.integrated.fontSize": 14,
+    "workbench.colorTheme": "Default Dark+",
+    "editor.fontSize": 14,
+    "editor.lineHeight": 22,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.wordWrap": "on",
+    "editor.rulers": [80, 120],
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false
+}

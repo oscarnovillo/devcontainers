@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  clima-app-node:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: clima-app-node-dev
+    environment:
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  clima-app-node-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clima-app-node-prod
+    environment:
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+      - DEBUG=false
+      - LOG_LEVEL=info
+      - NODE_ENV=production
+    stdin_open: true
+    tty: true
+    restart: unless-stopped

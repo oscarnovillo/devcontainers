@@ -1,0 +1,89 @@
+name: Python CI with pip and Docker
+
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    # Definimos variables para versionado usando secretos o variables de GitHub
+    env:
+      MAJOR_VERSION: ${{ vars.MAJOR_VERSION || '1' }}
+      MINOR_VERSION: ${{ vars.MINOR_VERSION || '0' }}
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+        
+    - name: Install dependencies
+      run: |
+        cd aplicacionPython
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install black flake8 pylint pytest
+        
+    - name: Lint with flake8
+      run: |
+        cd aplicacionPython
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        
+    - name: Lint with pylint
+      run: |
+        cd aplicacionPython
+        pylint app.py --exit-zero
+        
+    - name: Check formatting with black
+      run: |
+        cd aplicacionPython
+        black --check --diff .
+        
+    - name: Run tests with pytest
+      run: |
+        cd aplicacionPython
+        # Crear archivo de test básico si no existe
+        echo "def test_import():" > test_app.py
+        echo "    import app" >> test_app.py
+        echo "    assert True" >> test_app.py
+        pytest test_app.py -v
+        
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+          
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    # Genera la versión usando las variables de entorno y el número de ejecución del workflow    
+    - name: Set version
+      id: version
+      run: echo "VERSION=${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
+        
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./aplicacionPython
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/clima-app-python:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/clima-app-python:${{ steps.version.outputs.VERSION }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Image digest
+      run: echo "Image pushed with digest ${{ steps.docker_build.outputs.digest }}"

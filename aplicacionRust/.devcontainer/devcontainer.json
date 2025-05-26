@@ -1,0 +1,24 @@
+{
+    "name": "Rust Development",
+    "image": "mcr.microsoft.com/devcontainers/rust:latest",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "rust-lang.rust-analyzer",
+                "tamasfe.even-better-toml",
+                "ms-azuretools.vscode-docker",
+                "github.vscode-github-actions",
+                "fill-labs.dependi"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "rust-analyzer.checkOnSave.command": "clippy"
+            }
+        }
+    },
+    "remoteUser": "vscode",
+    "mounts": [
+        "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"
+    ],
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y docker.io"
+}

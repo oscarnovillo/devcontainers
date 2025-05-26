@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  clima-app-python:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: clima-app-python-dev
+    environment:
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+      - DEBUG=true
+      - LOG_LEVEL=debug
+      - PYTHON_ENV=development
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  clima-app-python-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clima-app-python-prod
+    environment:
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+      - DEBUG=false
+      - LOG_LEVEL=info
+      - PYTHON_ENV=production
+    stdin_open: true
+    tty: true
+    restart: unless-stopped

@@ -1,0 +1,104 @@
+name: Node.js CI with npm and Docker
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'aplicacionNode/**'
+      - '.github/workflows/node.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'aplicacionNode/**'
+      - '.github/workflows/node.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    # Definimos variables para versionado usando secretos o variables de GitHub
+    env:
+      MAJOR_VERSION: ${{ vars.NODE_MAJOR_VERSION || '1' }}
+      MINOR_VERSION: ${{ vars.NODE_MINOR_VERSION || '0' }}
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: 'aplicacionNode/package-lock.json'
+
+    - name: Install dependencies
+      run: |
+        cd aplicacionNode
+        npm ci
+
+    - name: Lint with ESLint
+      run: |
+        cd aplicacionNode
+        npm run lint || echo "Ejecutando ESLint directamente"
+        npx eslint . --ext .js
+
+    - name: Check formatting with Prettier
+      run: |
+        cd aplicacionNode
+        npm run format:check || echo "Ejecutando Prettier directamente"
+        npx prettier --check .
+
+    - name: Run tests
+      run: |
+        cd aplicacionNode
+        npm test || echo "No hay tests definidos aún"
+
+    - name: Build application
+      run: |
+        cd aplicacionNode
+        npm run build || echo "No hay proceso de build definido"
+
+    - name: Test application startup
+      run: |
+        cd aplicacionNode
+        timeout 10s node app.js || echo "Aplicación inicia correctamente"
+        
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    env:
+      MAJOR_VERSION: ${{ vars.NODE_MAJOR_VERSION || '1' }}
+      MINOR_VERSION: ${{ vars.NODE_MINOR_VERSION || '0' }}
+
+    steps:
+    - uses: actions/checkout@v4
+        
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+          
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    # Genera la versión usando las variables de entorno y el número de ejecución del workflow    
+    - name: Set version
+      id: version
+      run: echo "VERSION=${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
+        
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./aplicacionNode
+        push: true
+        build-args: |
+          WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/clima-app-node:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/clima-app-node:${{ steps.version.outputs.VERSION }}

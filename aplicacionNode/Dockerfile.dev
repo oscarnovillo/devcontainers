@@ -1,0 +1,27 @@
+# Imagen de desarrollo con herramientas adicionales
+FROM node:18-alpine AS development
+
+# Instalar dependencias del sistema necesarias
+RUN apk add --no-cache \
+    ca-certificates \
+    curl \
+    git \
+    && rm -rf /var/cache/apk/*
+
+# Crear directorio para la aplicación
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+
+# Instalar todas las dependencias (incluidas las de desarrollo)
+RUN npm install && npm cache clean --force
+
+# Instalar herramientas globales de desarrollo
+RUN npm install -g nodemon eslint prettier
+
+# Copiar el código de la aplicación
+COPY app.js .
+
+# Ejecutar la aplicación en modo desarrollo
+CMD ["nodemon", "app.js"]

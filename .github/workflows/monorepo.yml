@@ -1,0 +1,62 @@
+name: Multi-Language CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Job para detectar qué aplicaciones han cambiado  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      rust: ${{ steps.changes.outputs.rust }}
+      python: ${{ steps.changes.outputs.python }}
+      node: ${{ steps.changes.outputs.node }}
+      java: ${{ steps.changes.outputs.java }}
+      spring: ${{ steps.changes.outputs.spring }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          rust:
+            - 'applicacionRust/**'          python:
+            - 'aplicacionPython/**'
+          node:
+            - 'aplicacionNode/**'
+          java:
+            - 'aplicacionJava/**'
+          php:
+            - 'aplicacionPhp/**'
+
+  # Información general del repositorio
+  info:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Repository Information
+      run: |
+        echo "🚀 Monorepo CI/CD Pipeline"
+        echo "📊 Información del repositorio:"
+        echo "- Commit: ${{ github.sha }}"
+        echo "- Rama: ${{ github.ref_name }}"
+        echo "- Evento: ${{ github.event_name }}"
+        echo "- Actor: ${{ github.actor }}"
+        echo ""        echo "📁 Aplicaciones disponibles:"
+        ls -la | grep ^d | grep -E "aplicacion" || echo "No se encontraron carpetas de aplicaciones"
+
+  # Trigger individual workflows based on changes
+  trigger-workflows:
+    needs: [changes, info]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Show detected changes
+      run: |        echo "🔍 Cambios detectados:"
+        echo "- Rust: ${{ needs.changes.outputs.rust }}"
+        echo "- Python: ${{ needs.changes.outputs.python }}"
+        echo "- Node.js: ${{ needs.changes.outputs.node }}"
+        echo "- Java (Clima): ${{ needs.changes.outputs.java }}"
+        echo "- PHP: ${{ needs.changes.outputs.php }}"

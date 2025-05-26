@@ -1,0 +1,97 @@
+{
+    "name": "Clima App PHP",
+    "dockerFile": "Dockerfile",
+    "context": "..",
+    "workspaceFolder": "/var/www/html",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "formulahendry.auto-rename-tag",
+                "bradlc.vscode-tailwindcss",
+                "ms-vscode.vscode-json",
+                "redhat.vscode-yaml",
+                "ms-azuretools.vscode-docker",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "valeryanm.vscode-phpsab",
+                "recca0120.vscode-phpunit",
+                "sanderronde.phpstan-vscode",
+                "junstyle.php-cs-fixer",
+                "devsense.composer-php-vscode"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "php.debug.executablePath": "/usr/local/bin/php",
+                "intelephense.files.maxSize": 5000000,
+                "intelephense.telemetry.enabled": false,
+                "intelephense.format.enable": true,
+                "php.suggest.basic": false,                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll": "explicit",
+                    "source.organizeImports": "explicit"
+                },
+                "phpunit.phpunit": "/var/www/html/vendor/bin/phpunit",
+                "phpunit.args": [
+                    "--configuration",
+                    "/var/www/html/phpunit.xml"
+                ],
+                "phpstan.enabled": true,
+                "phpstan.configFile": "/var/www/html/phpstan.neon",
+                "php-cs-fixer.executablePath": "/var/www/html/vendor/bin/php-cs-fixer",
+                "php-cs-fixer.config": "/var/www/html/.php-cs-fixer.php",
+                "php-cs-fixer.formatHtml": true,
+                "php-cs-fixer.onsave": true,
+                "files.exclude": {
+                    "**/vendor": true,
+                    "**/.git": true,
+                    "**/.DS_Store": true,
+                    "**/Thumbs.db": true,
+                    "**/node_modules": true,
+                    "**/.phpunit.cache": true,
+                    "**/coverage": true
+                },
+                "search.exclude": {
+                    "**/vendor": true,
+                    "**/node_modules": true,
+                    "**/.phpunit.cache": true,
+                    "**/coverage": true
+                },
+                "emmet.includeLanguages": {
+                    "php": "html"
+                }
+            }
+        }
+    },
+    "remoteEnv": {
+        "APP_ENV": "development",
+        "DEBUG": "true",
+        "LOG_LEVEL": "debug",
+        "XDEBUG_MODE": "develop,debug,coverage"
+    },
+    "postCreateCommand": "chmod +x .devcontainer/setup.sh && .devcontainer/setup.sh",
+    "forwardPorts": [80, 8080, 9003],
+    "portsAttributes": {
+        "80": {
+            "label": "Apache Server",
+            "onAutoForward": "notify"
+        },
+        "8080": {
+            "label": "PHP Development Server",
+            "onAutoForward": "notify"
+        },
+        "9003": {
+            "label": "Xdebug",
+            "onAutoForward": "silent"
+        }
+    },
+    "remoteUser": "www-data",
+    "mounts": [
+        "source=${localWorkspaceFolder}/.env,target=/var/www/html/.env,type=bind,consistency=cached"
+    ]
+}

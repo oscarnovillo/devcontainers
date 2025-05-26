@@ -1,0 +1,63 @@
+{
+    "name": "Clima App Java",
+    "dockerFile": "Dockerfile",
+    "context": "..",
+    //"workspaceFolder": "/workspace",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "redhat.java",
+                "pivotal.vscode-spring-boot",
+                "vscjava.vscode-maven",
+                "sonarsource.sonarlint-vscode",
+                "eamodio.gitlens",
+                "ms-azuretools.vscode-docker",
+                "GitHub.copilot",
+                "GitHub.copilot-chat"
+            ],
+            "settings": {
+                "java.configuration.checkProjectSettingsExclusions": false,
+                "java.format.settings.url": "/workspace/.vscode/eclipse-java-google-style.xml",
+                "java.format.settings.profile": "GoogleStyle",
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": "explicit"
+                },
+                "maven.executable.path": "/usr/bin/mvn",
+                "java.test.config": [
+                    {
+                        "name": "JUnit",
+                        "workingDirectory": "/workspace"
+                    }
+                ]
+            }
+        }
+    },
+    "remoteEnv": {
+        "JAVA_TOOL_OPTIONS": "-Dfile.encoding=UTF8"
+    },
+    "postCreateCommand": "set -a && [ -f /workspaces/aplicacionJava/.env.development ] && . /workspaces/aplicacionJava/.env.development && set +a && mvn clean install -DskipTests",
+    "forwardPorts": [
+        8080,
+        5005
+    ],
+    "portsAttributes": {
+        "8080": {
+            "label": "Spring Boot / App",
+            "onAutoForward": "notify"
+        },
+        "5005": {
+            "label": "Java Debugger",
+            "onAutoForward": "silent"
+        }
+    },
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=${localWorkspaceFolder}/.env,target=/workspace/.env,type=bind,consistency=cached"
+    ]
+}

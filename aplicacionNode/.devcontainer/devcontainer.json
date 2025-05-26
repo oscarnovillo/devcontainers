@@ -1,0 +1,75 @@
+{
+    "name": "Clima App Node.js",
+    "dockerFile": "Dockerfile",
+    "context": "..",
+   // "workspaceFolder": "/app",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "18"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.vscode-js-debug",
+                "ms-vscode.vscode-typescript-next",
+                "ms-vscode.vscode-json",
+                "redhat.vscode-yaml",
+                "ms-azuretools.vscode-docker",
+                "esbenp.prettier-vscode",
+                "dbaeumer.vscode-eslint",
+                "bradlc.vscode-tailwindcss",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "ms-vscode.vscode-npm-scripts"
+            ],
+            "settings": {
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.fixAll.eslint": true,
+                    "source.organizeImports": true
+                },
+                "javascript.preferences.quoteStyle": "single",
+                "typescript.preferences.quoteStyle": "single",
+                "prettier.singleQuote": true,
+                "prettier.trailingComma": "es5",
+                "prettier.tabWidth": 2,
+                "prettier.semi": true,
+                "files.exclude": {
+                    "**/node_modules": true,
+                    "**/.git": true,
+                    "**/.DS_Store": true,
+                    "**/Thumbs.db": true
+                },
+                "search.exclude": {
+                    "**/node_modules": true,
+                    "**/bower_components": true
+                }
+            }
+        }
+    },
+    "remoteEnv": {
+        "NODE_ENV": "development",
+        "DEBUG": "true",
+        "LOG_LEVEL": "debug"
+    },
+    "postCreateCommand": "npm install",
+    "forwardPorts": [3000, 8080],
+    "portsAttributes": {
+        "3000": {
+            "label": "Application",
+            "onAutoForward": "notify"
+        },
+        "8080": {
+            "label": "Development Server",
+            "onAutoForward": "notify"
+        }
+    },
+    "remoteUser": "node",
+    "mounts": [
+        //"source=${localWorkspaceFolder}/.env,target=/app/.env,type=bind,consistency=cached"
+    ]
+}

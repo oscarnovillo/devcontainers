@@ -1,0 +1,13 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - tests/bootstrap.php
+    ignoreErrors:
+        # Ignorar errores específicos si es necesario
+        - '#Call to an undefined method.*#'
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    reportUnmatchedIgnoredErrors: false

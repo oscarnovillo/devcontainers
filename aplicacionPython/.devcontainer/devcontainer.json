@@ -1,0 +1,64 @@
+{
+    "name": "Clima App Python",
+    "dockerFile": "Dockerfile",
+    "context": "..",
+    //"workspaceFolder": "/workspaces/aplicacionPython",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.flake8",
+                "ms-python.black-formatter",
+                "ms-python.pylint",
+                "ms-python.isort",
+                "ms-vscode.vscode-json",
+                "redhat.vscode-yaml",
+                "ms-azuretools.vscode-docker",
+                "GitHub.copilot",
+                "GitHub.copilot-chat"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.linting.enabled": true,
+                "python.linting.pylintEnabled": true,
+                "python.linting.flake8Enabled": true,
+                "python.formatting.provider": "black",
+                "python.formatting.blackArgs": [
+                    "--line-length",
+                    "88"
+                ],
+                "python.sortImports.args": [
+                    "--profile",
+                    "black"
+                ],
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": true
+                },
+                "files.exclude": {
+                    "**/__pycache__": true,
+                    "**/*.pyc": true
+                }
+            }
+        }
+    },
+    "remoteEnv": {
+        "PYTHONPATH": "/workspaces/aplicacionPython",
+        "PYTHON_ENV": "development",
+        "DEBUG": "true",
+        "LOG_LEVEL": "debug"
+    },
+    "postCreateCommand": "pip install -r requirements.txt", // && apt-get update && apt-get install -y docker.io",
+    "forwardPorts": [],
+    "remoteUser": "root",
+    "mounts": [
+        // Puedes descomentar y ajustar la siguiente línea si necesitas montar un .env
+        // "source=${localWorkspaceFolder}/.env,target=/workspace/aplicacionpython/.env,type=bind,consistency=cached",
+        //"type=bind,source=${localWorkspaceFolder},target=/workspaces/aplicacionPython",
+        "type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"
+    ]
+}
