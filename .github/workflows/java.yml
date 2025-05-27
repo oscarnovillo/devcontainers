@@ -66,6 +66,8 @@ jobs:
       with:
         context: ./aplicacionJava
         push: true
+        build-args: |
+          WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}
         tags: |
           ${{ secrets.DOCKERHUB_USERNAME }}/clima-app-java:latest
           ${{ secrets.DOCKERHUB_USERNAME }}/clima-app-java:${{ steps.version.outputs.VERSION }}

@@ -47,22 +47,22 @@ jobs:
 
     - name: Check formatting
       run: |
-        cd aplicacionRust/clima_app
+        cd aplicacionRust
         cargo fmt --all -- --check
 
     - name: Run clippy
       run: |
-        cd aplicacionRust/clima_app
+        cd aplicacionRust
         cargo clippy -- -D warnings
 
     - name: Build
       run: |
-        cd aplicacionRust/clima_app
+        cd aplicacionRust
         cargo build --release
 
     - name: Run tests
       run: |
-        cd aplicacionRust/clima_app
+        cd aplicacionRust
         cargo test
         
     - name: Set up Docker Buildx
@@ -84,7 +84,7 @@ jobs:
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: docker/build-push-action@v5
       with:
-        context: ./aplicacionRust/clima_app
+        context: ./aplicacionRust
         push: true
         build-args: |
           WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}
