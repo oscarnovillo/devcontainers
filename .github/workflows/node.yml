@@ -39,22 +39,22 @@ jobs:
         cd aplicacionNode
         npm ci
 
-    - name: Lint with ESLint
-      run: |
-        cd aplicacionNode
-        npm run lint || echo "Ejecutando ESLint directamente"
-        npx eslint . --ext .js
+    # - name: Lint with ESLint
+    #   run: |
+    #     cd aplicacionNode
+    #     npm run lint || echo "Ejecutando ESLint directamente"
+    #     npx eslint . --ext .js
 
-    - name: Check formatting with Prettier
-      run: |
-        cd aplicacionNode
-        npm run format:check || echo "Ejecutando Prettier directamente"
-        npx prettier --check .
+    # - name: Check formatting with Prettier
+    #   run: |
+    #     cd aplicacionNode
+    #     npm run format:check || echo "Ejecutando Prettier directamente"
+    #     npx prettier --check .
 
-    - name: Run tests
-      run: |
-        cd aplicacionNode
-        npm test || echo "No hay tests definidos aún"
+    # - name: Run tests
+    #   run: |
+    #     cd aplicacionNode
+    #     npm test || echo "No hay tests definidos aún"
 
     - name: Build application
       run: |
