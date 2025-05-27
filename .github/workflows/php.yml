@@ -125,7 +125,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/php-clima-app
+          images: ghcr.io/${{ github.actor }}/php-clima-app
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -151,7 +151,7 @@ jobs:
             -e WEATHER_API_KEY="${{ secrets.WEATHER_API_KEY }}" \
             -p 8080:80 \
             --name php-clima-test \
-            -d ghcr.io/${{ github.repository }}/php-clima-app:latest
+            -d ghcr.io/${{ github.actor }}/php-clima-app:latest
           
           # Wait for container to be ready
           sleep 10
