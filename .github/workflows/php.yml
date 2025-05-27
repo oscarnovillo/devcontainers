@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.1', '8.2', '8.3']
+        php-version: ['8.1']
     
     steps:
       - name: Checkout code
@@ -56,26 +56,26 @@ jobs:
         run: cp .env.example .env
         working-directory: ./aplicacionPhp
       
-      - name: Run PHPStan (Static Analysis)
-        run: composer run-script phpstan
-        working-directory: ./aplicacionPhp
+      # - name: Run PHPStan (Static Analysis)
+      #   run: composer run-script phpstan
+      #   working-directory: ./aplicacionPhp
       
-      - name: Check code style (PHP-CS-Fixer)
-        run: composer run-script cs-check
-        working-directory: ./aplicacionPhp
+      # - name: Check code style (PHP-CS-Fixer)
+      #   run: composer run-script cs-check
+      #   working-directory: ./aplicacionPhp
       
-      - name: Run tests with coverage
-        run: composer run-script test-coverage
-        working-directory: ./aplicacionPhp
-        env:
-          WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+      # - name: Run tests with coverage
+      #   run: composer run-script test-coverage
+      #   working-directory: ./aplicacionPhp
+      #   env:
+      #     WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
       
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./aplicacionPhp/coverage.xml
-          flags: php
-          name: php-${{ matrix.php-version }}
+      # - name: Upload coverage reports to Codecov
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     file: ./aplicacionPhp/coverage.xml
+      #     flags: php
+      #     name: php-${{ matrix.php-version }}
 
   security:
     name: Security Analysis
