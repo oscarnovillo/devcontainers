@@ -1,5 +1,5 @@
 # Dockerfile multi-stage para aplicación PHP clima
-FROM php:8.1-apache as base
+FROM php:8.1-apache AS base
 
 # Instalar extensiones de PHP necesarias y herramientas del sistema
 RUN apt-get update && apt-get install -y \
@@ -77,7 +77,7 @@ EXPOSE 80
 CMD ["apache2-foreground"]
 
 # Stage de desarrollo
-FROM base as development
+FROM base AS development
 
 # Instalar extensiones adicionales para desarrollo
 RUN docker-php-ext-install -j$(nproc) xdebug
@@ -100,7 +100,7 @@ ENV APP_ENV=development
 ENV LOG_LEVEL=debug
 
 # Stage de testing
-FROM development as testing
+FROM development AS testing
 
 # Ejecutar tests durante la construcción
 USER composer
