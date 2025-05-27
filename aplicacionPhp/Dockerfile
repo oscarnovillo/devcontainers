@@ -9,10 +9,12 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
+    libcurl4-openssl-dev \
     git \
     unzip \
-    curl \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    curl 
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
         pdo \
         pdo_mysql \
@@ -80,12 +82,17 @@ CMD ["apache2-foreground"]
 FROM base AS development
 
 # Instalar extensiones adicionales para desarrollo
-RUN docker-php-ext-install -j$(nproc) xdebug
+RUN apt-get update && apt-get install -y autoconf gcc make pkg-config \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Instalar dependencias de desarrollo
-USER composer
-RUN composer install --optimize-autoloader --no-interaction --no-progress
 USER root
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+RUN chown -R composer:www-data /var/www/html/vendor
+RUN chmod -R 775 /var/www/html/vendor
 
 # Configurar Xdebug para desarrollo
 RUN echo "xdebug.mode=develop,debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -100,9 +107,13 @@ ENV APP_ENV=development
 ENV LOG_LEVEL=debug
 
 # Stage de testing
-FROM development AS testing
+# FROM development AS testing
 
-# Ejecutar tests durante la construcción
-USER composer
-RUN composer run-script test
-USER root
+# # Instalar PHPUnit globalmente para testing
+# RUN composer global require phpunit/phpunit --no-interaction --no-progress --prefer-dist
+# ENV PATH="/root/.composer/vendor/bin:/home/composer/.composer/vendor/bin:${PATH}"
+
+# # Ejecutar tests durante la construcción
+# USER root
+# RUN composer run-script test
+

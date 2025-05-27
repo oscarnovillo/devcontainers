@@ -32,7 +32,7 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
+        "test": "vendor/bin/phpunit",
         "test-coverage": "phpunit --coverage-html coverage",
         "phpstan": "phpstan analyse --level=8 src tests",
         "cs-check": "phpcs src tests --standard=PSR12",
