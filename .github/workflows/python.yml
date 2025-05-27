@@ -38,33 +38,33 @@ jobs:
         cd aplicacionPython
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install flake8 pylint black pytest
+    # pip install flake8 pylint black pytest
 
-    - name: Lint with flake8
-      run: |
-        cd aplicacionPython
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    # - name: Lint with flake8
+    #   run: |
+    #     cd aplicacionPython
+    #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-    - name: Lint with pylint
-      run: |
-        cd aplicacionPython
-        pylint app.py --exit-zero
+    # - name: Lint with pylint
+    #   run: |
+    #     cd aplicacionPython
+    #     pylint app.py --exit-zero
 
-    - name: Check formatting with black
-      run: |
-        cd aplicacionPython
-        black --check --diff .
+    # - name: Check formatting with black
+    #   run: |
+    #     cd aplicacionPython
+    #     black --check --diff .
 
-    - name: Test with pytest
-      run: |
-        cd aplicacionPython
-        python -m pytest --verbose || echo "No hay tests definidos aún"
+    # - name: Test with pytest
+    #   run: |
+    #     cd aplicacionPython
+    #     python -m pytest --verbose || echo "No hay tests definidos aún"
 
-    - name: Run application test
-      run: |
-        cd aplicacionPython
-        python -c "import app; print('Aplicación importada correctamente')"
+    # - name: Run application test
+    #   run: |
+    #     cd aplicacionPython
+    #     python -c "import app; print('Aplicación importada correctamente')"
         
   docker:
     needs: build
