@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'applicacionRust/**'
+      - 'aplicacionRust/**'
       - '.github/workflows/rust.yml'
 
 jobs:
@@ -40,29 +40,29 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-          applicacionRust/clima_app/target/
+          aplicacionRust/clima_app/target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
           ${{ runner.os }}-cargo-
 
     - name: Check formatting
       run: |
-        cd applicacionRust/clima_app
+        cd aplicacionRust/clima_app
         cargo fmt --all -- --check
 
     - name: Run clippy
       run: |
-        cd applicacionRust/clima_app
+        cd aplicacionRust/clima_app
         cargo clippy -- -D warnings
 
     - name: Build
       run: |
-        cd applicacionRust/clima_app
+        cd aplicacionRust/clima_app
         cargo build --release
 
     - name: Run tests
       run: |
-        cd applicacionRust/clima_app
+        cd aplicacionRust/clima_app
         cargo test
         
     - name: Set up Docker Buildx
@@ -84,7 +84,7 @@ jobs:
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: docker/build-push-action@v5
       with:
-        context: ./applicacionRust/clima_app
+        context: ./aplicacionRust/clima_app
         push: true
         build-args: |
           WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}

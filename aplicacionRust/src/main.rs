@@ -28,7 +28,7 @@ struct CurrentWeather {
 #[derive(Debug, Deserialize)]
 struct Condition {
     text: String,
-} 
+}  
 
 fn cargar_configuracion() {
     // Cargar el archivo .env adecuado según RUST_ENV
