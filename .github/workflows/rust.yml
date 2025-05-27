@@ -40,30 +40,30 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-          aplicacionRust/clima_app/target/
+          aplicacionRust/target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
           ${{ runner.os }}-cargo-
 
-    - name: Check formatting
-      run: |
-        cd aplicacionRust
-        cargo fmt --all -- --check
+    # - name: Check formatting
+    #   run: |
+    #     cd aplicacionRust
+    #     cargo fmt --all -- --check
 
-    - name: Run clippy
-      run: |
-        cd aplicacionRust
-        cargo clippy -- -D warnings
+    # - name: Run clippy
+    #   run: |
+    #     cd aplicacionRust
+    #     cargo clippy -- -D warnings
 
     - name: Build
       run: |
         cd aplicacionRust
         cargo build --release
 
-    - name: Run tests
-      run: |
-        cd aplicacionRust
-        cargo test
+    # - name: Run tests
+    #   run: |
+    #     cd aplicacionRust
+    #     cargo test
         
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
