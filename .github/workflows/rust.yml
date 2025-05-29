@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'applicacionRust/**'
+      - 'aplicacionRust/**'
       - '.github/workflows/rust.yml'
   pull_request:
     branches: [ "main" ]
