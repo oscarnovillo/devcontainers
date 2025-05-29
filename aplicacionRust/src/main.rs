@@ -61,7 +61,7 @@ fn main() {
     // Cargar variables de entorno desde el archivo correspondiente
     cargar_configuracion();
 
-    println!("Aplicación de Clima");
+    println!("Aplicacióncita de Clima");
     println!("-----------------");
     println!("Ingresa el nombre de una ciudad:");
 
